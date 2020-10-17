@@ -57,7 +57,7 @@ def echo_message(message):
                      "Или отправь крупное фото чека.")
 
     else:
-        bot.send_message(chat_id, '\n'.join(goods))
+        # bot.send_message(chat_id, '\n'.join(goods))
 
         image = make_goods_image(goods_images_path, result, synset)
         bot.send_photo(chat_id, image)

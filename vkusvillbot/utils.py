@@ -37,10 +37,15 @@ def make_goods_image(goods_images_path, idxs, synset):
         fig_size = (20, 20)
         plot_grid = (2, 2)
 
-    else:
+    elif len(idxs) > 2:
         title_size = 20
         fig_size = (10, 18)
         plot_grid = (2, 1)
+
+    else:
+        title_size = 20
+        fig_size = (10, 10)
+        plot_grid = (1, 1)
 
     fig = plt.figure(figsize=fig_size)
 

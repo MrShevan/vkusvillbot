@@ -6,7 +6,7 @@ import io
 from PIL import Image
 
 from receipt_ocr import ReceiptProcessor
-from utils import chunks, make_goods_image
+from utils import chunks, make_image, make_image_barcode
 
 # Configs
 API_TOKEN = '1326787248:AAE4_0wXChcPlJVGSrZKIvxi75ChN-wGNWA'
@@ -16,6 +16,8 @@ data_path = '/app/vkusvillbot/data'
 save_photo = True
 save_dir = '/data/vkusvill_received'
 log_file = '/data/vkusvill_log.log'
+show_barcode = True
+chunk_len = 6 # 6 if show_barcode is True else 12
 
 # ------------------------------------ BOT INITIALIZE -----------------------------------------
 synset = pd.read_csv(goods_synset_path)
@@ -59,7 +61,11 @@ def echo_message(message):
     else:
         # bot.send_message(chat_id, '\n'.join(goods))
 
-        image = make_goods_image(goods_images_path, result, synset)
+        if not show_barcode:
+            image = make_image(goods_images_path, result, synset)
+        else:
+            image = make_image_barcode(goods_images_path, result, synset)
+
         bot.send_photo(chat_id, image)
 
         # Send map photo in the end
@@ -104,8 +110,12 @@ def handle_docs_photo(message):
 
         else:
             # Split list of result goods into chunks of len 12
-            for chunk in chunks(result, 12):
-                image = make_goods_image(goods_images_path, chunk, synset)
+            for chunk in chunks(result, chunk_len):
+                if not show_barcode:
+                    image = make_image(goods_images_path, chunk, synset)
+                else:
+                    image = make_image_barcode(goods_images_path, chunk, synset)
+
                 bot.send_photo(chat_id, image)
 
             # Send map photo in the end

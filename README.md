@@ -5,3 +5,6 @@
 Запуск бота:
 ``` python3.6 vkusvillbot/bot.py ```
 
+### Пример работы
+
+![alt tag](data/example.gif)

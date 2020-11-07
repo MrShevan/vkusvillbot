@@ -9,12 +9,13 @@ from PIL import Image
 from barcode.writer import ImageWriter
 from barcode import generate
 
+
 def chunks(l, n):
     for i in range(0, len(l), n):
         yield l[i:i + n]
 
 
-def make_image(goods_images_path, idxs, synset):
+def make_image(goods_images_path, idxs, synset, shelve_name):
     """ Max - 12 images """
     image_list = []
 
@@ -61,7 +62,7 @@ def make_image(goods_images_path, idxs, synset):
             label=f'{synset.iloc[id]["Товар"]} \n' +
                   f'Вид: {synset.iloc[id]["РодительскяГруппаТоваров"]} \n' +
                   f'Штрихкод: {str(synset.iloc[id]["Штрихкод"])} \n' +
-                  f'Номер полки: {str(synset.iloc[id]["Номер полки"])} \n',
+                  f'Номер полки: {str(synset.iloc[id][shelve_name])} \n',
             loc='left', fontdict={'fontsize': title_size})
         plt.xticks([])
         plt.yticks([])
@@ -75,7 +76,7 @@ def make_image(goods_images_path, idxs, synset):
     return buf.read()
 
 
-def make_image_barcode(goods_images_path, idxs, synset):
+def make_image_barcode(goods_images_path, idxs, synset, shelve_name):
     """ Max - 6 images """
     image_list = []
 
@@ -120,7 +121,7 @@ def make_image_barcode(goods_images_path, idxs, synset):
             label=f'{synset.iloc[id]["Товар"]} \n' +
                   f'Вид: {synset.iloc[id]["РодительскяГруппаТоваров"]} \n' +
                   f'Группа товаров: {str(synset.iloc[id]["ГруппаТоваров"])} \n' +
-                  f'Номер полки: {str(synset.iloc[id]["Номер полки"])} \n',
+                  f'Номер полки: {str(synset.iloc[id][shelve_name])} \n',
             loc='left', fontdict={'fontsize': title_size})
         plt.xticks([])
         plt.yticks([])

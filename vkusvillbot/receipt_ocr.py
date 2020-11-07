@@ -31,7 +31,7 @@ class ReceiptProcessor:
             text = reg_exp.sub(' ', text)
         return text.strip()
 
-    def match_goods(self, texts, thr=0.45):
+    def match_goods(self, texts):
         """ Подбирает предполагаемым товарам товары из базы по
             расстоянию Ливенштейна.
         """

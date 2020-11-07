@@ -12,12 +12,13 @@ from utils import chunks, make_image, make_image_barcode
 API_TOKEN = '1326787248:AAE4_0wXChcPlJVGSrZKIvxi75ChN-wGNWA'
 goods_synset_path = '/app/vkusvillbot/data/platform/goods_base.csv'
 goods_images_path = '/data/vkusvill_images'
-data_path = '/app/vkusvillbot/data'
 save_photo = True
 save_dir = '/data/vkusvill_received'
 log_file = '/data/vkusvill_log.log'
 show_barcode = True
-chunk_len = 6 # 6 if show_barcode is True else 12
+chunk_len = 1 # 6 max for barcodes, 12 max without
+map_path = '/app/vkusvillbot/data/maps/map_leningradskaya_36.jpg'
+shelve_name = 'Leningradskaya_36'
 
 # ------------------------------------ BOT INITIALIZE -----------------------------------------
 synset = pd.read_csv(goods_synset_path)
@@ -62,14 +63,14 @@ def echo_message(message):
         # bot.send_message(chat_id, '\n'.join(goods))
 
         if not show_barcode:
-            image = make_image(goods_images_path, result, synset)
+            image = make_image(goods_images_path, result, synset, shelve_name)
         else:
-            image = make_image_barcode(goods_images_path, result, synset)
+            image = make_image_barcode(goods_images_path, result, synset, shelve_name)
 
         bot.send_photo(chat_id, image)
 
         # Send map photo in the end
-        map_image = open(os.path.join(data_path, 'map.jpg'), 'rb')
+        map_image = open(map_path, 'rb')
         bot.send_photo(chat_id, map_image)
 
 
@@ -112,14 +113,14 @@ def handle_docs_photo(message):
             # Split list of result goods into chunks of len 12
             for chunk in chunks(result, chunk_len):
                 if not show_barcode:
-                    image = make_image(goods_images_path, chunk, synset)
+                    image = make_image(goods_images_path, chunk, synset, shelve_name)
                 else:
-                    image = make_image_barcode(goods_images_path, chunk, synset)
+                    image = make_image_barcode(goods_images_path, chunk, synset, shelve_name)
 
                 bot.send_photo(chat_id, image)
 
             # Send map photo in the end
-            map_image = open(os.path.join(data_path, 'map.jpg'), 'rb')
+            map_image = open(map_path, 'rb')
             bot.send_photo(chat_id, map_image)
 
     except Exception as e:

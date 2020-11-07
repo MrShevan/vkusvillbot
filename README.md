@@ -3,6 +3,5 @@
 #### Эксплуатация
 
 Запуск бота:
-```python3.6 vkusvillbot/bot.py```
+``` python3.6 vkusvillbot/bot.py ```
 
-#### Метрики оценки качества

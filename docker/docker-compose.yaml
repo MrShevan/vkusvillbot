@@ -1,0 +1,13 @@
+version: '2.3'
+services:
+  vkusvillbot:
+    runtime: nvidia
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    image: vkusvillbot
+    container_name: vkusvillbot
+    volumes:
+      - ../.:/app
+    command: /bin/bash -c "cd /app/ && sleep infinity"
+    restart: unless-stopped

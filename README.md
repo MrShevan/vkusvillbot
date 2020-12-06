@@ -3,7 +3,7 @@
 #### Эксплуатация
 
 Запуск бота:
-``` python3.6 vkusvillbot/bot.py ```
+``` python bot.py ```
 
 ### Пример работы
 

@@ -66,7 +66,6 @@ class ReceiptProcessor:
         return result, goods, probs
 
     def text_process(self, text):
-        """ text: str object """
         # Препроцессинг строки
         proc_texts = list(map(self._text_preproc, [text.lower()]))
 

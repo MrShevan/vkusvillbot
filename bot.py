@@ -1,24 +1,19 @@
 import telebot
 import logging
 import os
-import pandas as pd
 import io
+
+import pandas as pd
 from PIL import Image
+from more_itertools import chunked
 
-from receipt_ocr import ReceiptProcessor
-from utils import chunks, make_image, make_image_barcode
+from lib import ReceiptProcessor
+from lib import make_image, make_image_barcode
 
-# Configs
-API_TOKEN = '1326787248:AAE4_0wXChcPlJVGSrZKIvxi75ChN-wGNWA'
-goods_synset_path = '/app/vkusvillbot/data/platform/goods_base.csv'
-goods_images_path = '/data/vkusvill_images'
-save_photo = True
-save_dir = '/data/vkusvill_received'
-log_file = '/data/vkusvill_log.log'
-show_barcode = True
-chunk_len = 1 # 6 max for barcodes, 12 max without
-map_path = '/app/vkusvillbot/data/maps/map_leningradskaya_36.jpg'
-shelve_name = 'Leningradskaya_36'
+from config import API_TOKEN
+from config import goods_synset_path, goods_images_path, map_path, log_file, shelve_name
+from config import save_photo, save_dir
+from config import show_barcode, chunk_len
 
 # ------------------------------------ BOT INITIALIZE -----------------------------------------
 synset = pd.read_csv(goods_synset_path)
@@ -26,12 +21,9 @@ logging.basicConfig(level=logging.INFO,
                     format="%(asctime)s::%(levelname)s::%(name)s::%(message)s",
                     handlers=[logging.FileHandler(log_file), logging.StreamHandler()],
                     datefmt='%Y-%m-%d %H:%M')
-# logging.fileConfig('logging.conf')
 
 bot = telebot.TeleBot(API_TOKEN)
 receipt_processor = ReceiptProcessor(synset['Товар'].values)
-
-# -------------------------------------- BOT LOGIC --------------------------------------------
 
 
 # Handle '/start' and '/help'
@@ -43,6 +35,7 @@ def send_welcome(message):
                  "Пришли мне фото сборочного чека, или отправь в соообщение название товара.")
 
 
+# Handle text message
 @bot.message_handler(content_types=['text'])
 def echo_message(message):
     chat_id = message.chat.id
@@ -60,10 +53,9 @@ def echo_message(message):
                      "Или отправь крупное фото чека.")
 
     else:
-        # bot.send_message(chat_id, '\n'.join(goods))
-
         if not show_barcode:
             image = make_image(goods_images_path, result, synset, shelve_name)
+
         else:
             image = make_image_barcode(goods_images_path, result, synset, shelve_name)
 
@@ -74,6 +66,7 @@ def echo_message(message):
         bot.send_photo(chat_id, map_image)
 
 
+# Handle photo or document message
 @bot.message_handler(content_types=['photo', 'document'])
 def handle_docs_photo(message):
     try:
@@ -111,9 +104,10 @@ def handle_docs_photo(message):
 
         else:
             # Split list of result goods into chunks of len 12
-            for chunk in chunks(result, chunk_len):
+            for chunk in chunked(result, chunk_len):
                 if not show_barcode:
                     image = make_image(goods_images_path, chunk, synset, shelve_name)
+
                 else:
                     image = make_image_barcode(goods_images_path, chunk, synset, shelve_name)
 

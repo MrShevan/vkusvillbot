@@ -1,4 +1,4 @@
-telebot==0.0.4
+PyTelegramBotAPI==3.7.4
 python-barcode==0.13.1
 matplotlib==3.3.3
 numpy==1.16.1

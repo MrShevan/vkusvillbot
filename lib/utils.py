@@ -10,11 +10,6 @@ from barcode.writer import ImageWriter
 from barcode import generate
 
 
-def chunks(l, n):
-    for i in range(0, len(l), n):
-        yield l[i:i + n]
-
-
 def make_image(goods_images_path, idxs, synset, shelve_name):
     """ Max - 12 images """
     image_list = []

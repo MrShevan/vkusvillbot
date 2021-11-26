@@ -1,4 +1,4 @@
-API_TOKEN = '1326787248:AAE4_0wXChcPlJVGSrZKIvxi75ChN-wGNWA'
+API_TOKEN = 'Code Here' 
 
 # Platform params
 goods_synset_path = '/app/data/platform/goods_base.csv'

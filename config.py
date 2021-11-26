@@ -1,7 +1,7 @@
 API_TOKEN = 'Code Here' 
 
 # Platform params
-goods_synset_path = '/app/data/platform/goods_base.csv'
+goods_synset_path = '/app/data/platform/goods_base_chunk.csv'
 goods_images_path = '/data/vkusvill_images'
 map_path = '/app/data/maps/map_leningradskaya_36.jpg'
 shelve_name = 'Leningradskaya_36'
